@@ -1,0 +1,44 @@
+--- a/sdk/platform/driver/uart/uart.c	2024-03-07 17:25:06
++++ b/sdk/platform/driver/uart/uart.c	2025-05-22 12:35:29
+@@ -178,25 +178,6 @@
+ {
+     uart_env_t *uart_env = UART_ENV(uart_id);
+ 
+-    // Read the available data in RBR
+-    while (uart_env->rx_index < uart_env->rx_total_length)
+-    {
+-        // Read 1 byte
+-        if (uart_data_ready_getf(uart_id))
+-        {
+-            uart_env->rx_buffer[uart_env->rx_index++] = uart_read_rbr(uart_id);
+-        }
+-        // Return
+-        else
+-        {
+-            return;
+-        }
+-    }
+-
+-    // All data have been read.
+-    // Disable RX interrupts
+-    uart_rxdata_intr_setf(uart_id, UART_BIT_DIS);
+-
+     // Fire callback
+     if (uart_env->rx_cb != NULL)
+     {
+@@ -216,15 +197,6 @@
+ 
+     // Read already received data
+     uart_rx_isr(uart_id);
+-
+-    // Disable RX interrupts
+-    uart_rxdata_intr_setf(uart_id, UART_BIT_DIS);
+-
+-    // Fire callback
+-    if (uart_env->rx_cb != NULL)
+-    {
+-        uart_env->rx_cb(uart_env->rx_index);
+-    }
+ }
+ 
+ /**

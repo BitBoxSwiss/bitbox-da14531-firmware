@@ -1,0 +1,41 @@
+--- a/sdk/common_project_files/ldscripts/ldscript_DA14531.lds.S	2024-03-07 17:25:04
++++ b/sdk/common_project_files/ldscripts/ldscript_DA14531.lds.S	2024-09-27 23:56:17
+@@ -174,7 +174,7 @@
+     {
+         . = ALIGN(4);
+         __heap_mem_area_not_ret_start__ = .;
+-        *jump_table.o(heap_mem_area_not_ret)    /* not retained HEAP */
++        *(heap_mem_area_not_ret)    /* not retained HEAP */
+         __heap_mem_area_not_ret_end__ = .;
+     } > LR_IROM3
+ 
+@@ -246,9 +246,9 @@
+     {
+         . = ALIGN(4);
+         __db_heap_start__ = .;
+-        *jump_table.o(heap_env_area)
+-        *jump_table.o(heap_db_area)
+-        *jump_table.o(heap_msg_area)
++        *(heap_env_area)
++        *(heap_db_area)
++        *(heap_msg_area)
+         . = ALIGN(4);
+         __db_heap_end__ = .;
+     } > LR_RETAINED_RAM0
+@@ -302,14 +302,14 @@
+ #if defined (CFG_TRNG)
+     RET_DATA_UNINIT_TRNG_STATE (NOLOAD) :
+     {
+-        *trng.o(trng_state)         /* flag to decide if TRNG must run or not in order to generate the seed number */
++        *(trng_state)         /* flag to decide if TRNG must run or not in order to generate the seed number */
+     } > LR_RETAINED_TRNG_STATE
+ #endif /* defined (CFG_TRNG) */
+ 
+ #if defined (CFG_USE_CHACHA20_RAND)
+     RET_DATA_UNINIT_CHACHA_STATE (NOLOAD) :
+     {
+-        *chacha20.o (chacha20_state) /* random state in case chacha20 is used */
++        *(chacha20_state) /* random state in case chacha20 is used */
+     } > LR_RETAINED_CHACHA_STATE
+ #endif /* defined (CFG_USE_CHACHA20_RAND) */
+ }

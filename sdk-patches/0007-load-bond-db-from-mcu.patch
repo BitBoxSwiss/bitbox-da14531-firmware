@@ -1,0 +1,35 @@
+--- a/sdk/app_modules/src/app_bond_db/app_bond_db.c	2024-03-07 17:25:04
++++ b/sdk/app_modules/src/app_bond_db/app_bond_db.c	2025-05-22 12:52:26
+@@ -44,6 +44,9 @@
+  */
+ 
+ #include "rwip_config.h"
++#include <serial_link.h>
++#include <ke_msg.h>
++#include <uart_task.h>
+ 
+ #if (BLE_APP_SEC)
+ 
+@@ -247,6 +250,7 @@
+  */
+ __STATIC_INLINE void bond_db_load_ext(void)
+ {
++    sl_bond_db_load((uint8_t*)&bdb, sizeof(bdb));
+     #if defined (USER_CFG_APP_BOND_DB_USE_SPI_FLASH)
+     bond_db_load_flash();
+     #elif defined (USER_CFG_APP_BOND_DB_USE_I2C_EEPROM)
+@@ -264,6 +268,14 @@
+  */
+ __STATIC_INLINE void bond_db_store_ext(bool scheduler_en)
+ {
++    struct uart_tx_req *req =
++        KE_MSG_ALLOC_DYN(UART_TX, KE_BUILD_ID(TASK_UART, 0), TASK_APP,
++                         uart_tx_req, 1 + sizeof(struct bond_db));
++    req->type = SL_PT_CTRL_DATA;
++    req->length = 1 + sizeof(struct bond_db);
++    req->value[0] = SL_CTRL_CMD_BOND_DB_SET;
++    memcpy(&req->value[1], &bdb, sizeof(struct bond_db));
++    KE_MSG_SEND(req);
+     #if defined (USER_CFG_APP_BOND_DB_USE_SPI_FLASH)
+     bond_db_store_flash(scheduler_en);
+     #elif defined (USER_CFG_APP_BOND_DB_USE_I2C_EEPROM)

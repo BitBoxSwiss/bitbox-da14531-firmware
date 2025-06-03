@@ -1,0 +1,18 @@
+--- a/sdk/app_modules/src/app_common/app.c	2024-03-07 17:25:04
++++ b/sdk/app_modules/src/app_common/app.c	2025-02-27 12:32:12
+@@ -605,6 +605,7 @@
+         cmd = app_connect_start_msg_create();
+         start_connection_cmd = cmd;
+ 
++#if 0
+         cmd->op.code = user_central_conf.code;
+         cmd->op.addr_src = user_central_conf.addr_src;
+         cmd->scan_interval = user_central_conf.scan_interval;
+@@ -667,6 +668,7 @@
+             cmd->peers[7].addr_type = user_central_conf.peer_addr_7_type;
+             #endif
+         }
++#endif
+     }
+     return start_connection_cmd;
+ }

@@ -1,0 +1,33 @@
+--- a/sdk/app_modules/src/app_common/app.c	2024-03-07 17:25:04
++++ b/sdk/app_modules/src/app_common/app.c	2025-03-11 22:12:26
+@@ -696,7 +698,7 @@
+         memset(cmd->irk.key, 0, KEY_LEN*sizeof(uint8_t));
+ #else
+         cmd->renew_dur = user_gapm_conf.renew_dur;
+-        memcpy(cmd->irk.key, user_gapm_conf.irk, KEY_LEN*sizeof(uint8_t));
++        memcpy(cmd->irk.key, irk, KEY_LEN*sizeof(uint8_t));
+ #endif
+ 
+ #if (USER_CFG_ADDRESS_MODE == APP_CFG_ADDR_STATIC)
+--- a/sdk/app_modules/src/app_default_hnd/app_default_handlers.c	2024-03-07 17:25:04
++++ b/sdk/app_modules/src/app_default_hnd/app_default_handlers.c	2025-03-11 22:10:23
+@@ -207,7 +207,7 @@
+     memcpy(&dev_info.addr, &(gapm_env.addr), BD_ADDR_LEN*sizeof(uint8_t));
+     dev_info.addr_type = ((GAPM_F_GET(gapm_env.cfg_flags, ADDR_TYPE) == GAPM_CFG_ADDR_PUBLIC) ? ADDR_PUBLIC : ADDR_RAND);
+     memset(&dev_info.peer_irk, 0, KEY_LEN * sizeof(uint8_t));
+-    memcpy(&dev_info.local_irk, user_gapm_conf.irk, KEY_LEN * sizeof(uint8_t));
++    memcpy(&dev_info.local_irk, irk, KEY_LEN * sizeof(uint8_t));
+     app_easy_security_ral_op(APP_ADD_DEV_IN_RAL, &dev_info);
+ #endif
+ #if (USER_CFG_ADDRESS_MODE == APP_CFG_CNTL_PRIV_RPA_PUB) || (USER_CFG_ADDRESS_MODE == APP_CFG_CNTL_PRIV_RPA_RAND)
+--- a/sdk/app_modules/src/app_sec/app_security_task.c	2024-03-07 17:25:04
++++ b/sdk/app_modules/src/app_sec/app_security_task.c	2025-03-11 22:09:39
+@@ -171,7 +171,7 @@
+             memcpy(&dev_info.addr, &param->data.irk.addr.addr.addr, BD_ADDR_LEN*sizeof(uint8_t));
+             dev_info.addr_type = param->data.irk.addr.addr_type;
+             memcpy(&dev_info.peer_irk, &param->data.irk.irk.key, KEY_LEN*sizeof(uint8_t));
+-            memcpy(&dev_info.local_irk, user_gapm_conf.irk, KEY_LEN*sizeof(uint8_t));
++            memcpy(&dev_info.local_irk, irk, KEY_LEN*sizeof(uint8_t));
+             app_easy_security_ral_op(APP_RMV_DEV_FRM_RAL, &dev_info);
+             app_easy_security_ral_op(APP_ADD_DEV_IN_RAL, &dev_info);
+ #endif

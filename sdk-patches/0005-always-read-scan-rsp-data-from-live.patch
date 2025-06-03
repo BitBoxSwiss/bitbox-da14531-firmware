@@ -1,0 +1,13 @@
+--- ../../DA145xx_SDK.orig/6.0.22.1401/sdk/app_modules/src/app_common/app.c	2024-03-07 17:25:04
++++ ./sdk/app_modules/src/app_common/app.c	2025-03-19 16:05:27
+@@ -444,8 +444,8 @@
+         }
+         adv_cmd->info.host.adv_data_len = USER_ADVERTISE_DATA_LEN;
+         memcpy(&(cmd->info.host.adv_data[0]), USER_ADVERTISE_DATA, USER_ADVERTISE_DATA_LEN);
+-        adv_cmd->info.host.scan_rsp_data_len = USER_ADVERTISE_SCAN_RESPONSE_DATA_LEN;
+-        memcpy(&(cmd->info.host.scan_rsp_data[0]), USER_ADVERTISE_SCAN_RESPONSE_DATA, USER_ADVERTISE_SCAN_RESPONSE_DATA_LEN);
++        adv_cmd->info.host.scan_rsp_data_len = scan_rsp_data_len;
++        memcpy(&(cmd->info.host.scan_rsp_data[0]), &scan_rsp_data[0], scan_rsp_data_len);
+ #if !defined (__DA14531_01__) && !defined (__DA14535__)
+ #if (USER_CFG_ADDRESS_MODE == APP_CFG_CNTL_PRIV_RPA_RAND)
+         // Local Address has been added to RAL. Use this entry to advertise with RPA
