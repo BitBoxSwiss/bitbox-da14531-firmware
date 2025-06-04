@@ -24,15 +24,7 @@ dockerdev:
 
 .PHONY: dockerinit
 dockerinit:
-	${DOCKER} build -t shiftcrypto/da14531:$(shell cat .containerversion) .
-
-.PHONY: dockerpull
-dockerpull:
-	${DOCKER} pull shiftcrypto/da14531
-
-.PHONY: dockerpush
-dockerpush:
-	${DOCKER} build --push --platform linux/amd64,linux/arm64 -t shiftcrypto/da14531:$(shell cat .containerversion) .
+	${DOCKER} build -t shiftcrypto/da14531:latest .
 
 .PHONY: dockerstop
 dockerstop:
