@@ -59,7 +59,7 @@ redistributed here. To be able to rebuild the firmware you must register on
   * Today you can find all the versions on [this
     page](https://www.renesas.com/en/products/wireless-connectivity/bluetooth-low-energy/da14531-smartbond-tiny-ultra-low-power-bluetooth-51-system-chip)
     by scrolling down to **Software Downloads**. At the bottom of that table
-    ther is a "+ Add N hidden items" button you can click to display all
+    there is a "+ Add N hidden items" button you can click to display all
     available versions. Find the item called **SDKX for DA1453x, DA14585/6**
     (replace X with the actual version).
 
