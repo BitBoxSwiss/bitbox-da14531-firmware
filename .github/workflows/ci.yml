@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          apt install gpg
+          sudo apt-get install gnupg
 
       - run: |
           ./scripts/check-release-sigs
