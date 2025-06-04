@@ -1,0 +1,12 @@
+name: ci
+on: pull_request
+jobs:
+  check-signatures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          apt install gpg
+
+      - run: |
+          ./scripts/check-release-sigs
