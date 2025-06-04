@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+
+import sys
+from pathlib import Path
+from dataclasses import dataclass
+
+@dataclass
+class MetadataV1:
+    version: int
+    hash: bytes
+
+    def __repr__(self):
+        return f"MetadataV1(version={self.version}, hash={self.hash.hex()})"
+
+@dataclass
+class Metadata:
+    metadata_version: int
+    inner: MetadataV1
+
+def main(firmware_path: str):
+    firmware = bytes()
+    with Path(firmware_path).open("rb") as fh:
+        firmware = fh.read()
+
+    metadata_version = firmware[0x110]
+
+    if metadata_version != 1:
+        print("unkown metadata version")
+        sys.exit(-1)
+
+    version = int.from_bytes(firmware[0x111:0x113], byteorder="little")
+    hash = firmware[0x113:0x113+20]
+    metadata = Metadata(metadata_version, MetadataV1(version, hash))
+    print(metadata)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: ./print_metadata <firmware.bin>")
+    main(sys.argv[1])

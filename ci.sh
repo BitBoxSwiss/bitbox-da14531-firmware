@@ -8,8 +8,10 @@ die() {
     exit 1
 }
 
-make firmware-release
-make firmware-debug
+make firmware-release -j$(($(nproc)+1))
+make firmware-debug -j$(($(nproc)+1))
+
+./scripts/print_metadata build-release/bitbox-da14531-firmware.bin
 
 # The address of the metadata MUST NEVER change once a public release has been made.
 [ "$(awk '/^ .metadata/ {print $2}' build-release/output.map)" = "0x07fc0110" ] || die ".metadata in release changed location"
@@ -23,7 +25,6 @@ make firmware-debug
 # -*:  disable all
 # clang-analyzer-*: enable clang analyzer checks
 # -clang-analyzer-cplusplus*: disable c++ checks
-
 clang-tidy-18 -checks='-*,clang-analyzer-*,-clang-analyzer-cplusplus*,-clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling' src/*.c
 
 echo "success!"
