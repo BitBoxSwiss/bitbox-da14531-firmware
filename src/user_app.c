@@ -232,11 +232,11 @@ void user_app_on_init_cb(void) {
   uint8_t buf[SCAN_RSP_DATA_LEN];
   buf[0] = read + 1;
   buf[1] = GAP_AD_TYPE_COMPLETE_NAME;
-  int len = MIN(SCAN_RSP_DATA_LEN - 2, read);
+  uint8_t len = MIN(SCAN_RSP_DATA_LEN - 2, read);
   memcpy(&buf[2], &device_info.dev_name.name[0], len);
   LOG_S("device name loaded\n");
 
-  user_app_set_scan_rsp_data(&buf[0], read + 2);
+  user_app_set_scan_rsp_data(&buf[0], len + 2);
   uart_task_enable();
 }
 
