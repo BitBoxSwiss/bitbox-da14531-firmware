@@ -59,7 +59,7 @@ bool serial_link_parse_frame(uint8_t *buf, uint16_t *buf_len, uint8_t *frame,
         if (*frame_len >= 3) {
 
           // Move any bytes we didn't use to the beginning
-          memcpy(&buf[0], &buf[i + 1], *buf_len - i - 1);
+          memmove(&buf[0], &buf[i + 1], *buf_len - i - 1);
           *buf_len = *buf_len - i - 1;
 
           return true;
