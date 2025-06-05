@@ -63,11 +63,19 @@ redistributed here. To be able to rebuild the firmware you must register on
     available versions. Find the item called **SDKX for DA1453x, DA14585/6**
     (replace X with the actual version).
 
+* Fetch the sources:
+  ```
+  git clone https://github.com/BitBoxSwiss/bitbox-da14531-firmware.git
+  ```
+* Check out the tag you want to reproduce, for example:
+  ```
+  git checkout v1
+  ```
 * Build the container image:
   ```
-  make dockerinit
+  docker build --platform linux/amd64 -t shiftcrypto/da14531 .
   ```
-* Run the container image and build the firmware:
+* Run the container image and build the firmware inside the container:
   ```
   ./scripts/dockerenv.sh release
   make firmware-release
