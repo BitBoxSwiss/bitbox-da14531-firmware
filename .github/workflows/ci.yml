@@ -1,5 +1,7 @@
 name: ci
 on: pull_request
+permissions:
+  contents: read
 jobs:
   check-signatures:
     runs-on: ubuntu-latest
